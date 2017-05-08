@@ -50,6 +50,18 @@
       // Your code here
       ctx.drawImage(image, 0, 0);
       
+      ctx.font = "36pt Impact";
+      ctx.textAlign = "center";
+
+      ctx.fillStyle = "white";
+      ctx.fillText(topLine, canvas.width/2, 100);
+      ctx.fillText(bottomLine, canvas.width/2, 450);
+
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 2;
+      ctx.strokeText(topLine, canvas.width/2, 100);
+      ctx.strokeText(bottomLine, canvas.width/2, 450);
+      
 
     }
     
