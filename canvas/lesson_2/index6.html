@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas id="canvas" style="margin: 50px auto;display:block;border: 1px solid #ccc;"></canvas>
+
+	<script>
+		var c = document.getElementById('canvas');
+		c.width = 800;
+		c.height = 800;
+
+		var cxt = c.getContext("2d");
+		cxt.fillStyle = "#058";
+
+		cxt.textAlign = "center";
+		cxt.textBaseline = "middle";
+		cxt.font = "bold 50px Arial";
+		cxt.fillText("欢迎学习Canvas！", 400, 400);
+		
+		var textWidth = cxt.measureText("欢迎学习Canvas").width;
+		cxt.fillText(textWidth, 400, 500);
+	
+		cxt.moveTo(20, 0);
+		cxt.lineTo(20, 800);
+
+		cxt.moveTo(0, 400);
+		cxt.lineTo(800, 400);
+
+		cxt.moveTo(400, 0);
+		cxt.lineTo(400, 800);
+		cxt.strokeStyle = "#ccc";
+		cxt.stroke();
+	</script>
+</body>
+</html>

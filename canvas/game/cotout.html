@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>cutout</title>
+	<style type="text/css">
+		#canvas{border: thin inset #aaa;}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="1000" height="1000">
+		Canvas not supported
+	</canvas>
+
+	<script type="text/javascript">
+		var cxt = document.getElementById('canvas').getContext('2d');
+
+		function drawArc(){
+			cxt.beginPath();
+			cxt.arc(500, 500, 300, 0, Math.PI * 2, false);
+			cxt.arc(500, 500, 200, 0, Math.PI * 2, true);
+
+			cxt.fill();
+
+			cxt.shadowColor = undefined;
+			cxt.shadowOffsetX = 0;
+			cxt.shadowOffsetY = 0;
+			cxt.stroke();
+
+		}
+
+		function draw(){
+			cxt.clearRect(0, 0, cxt.canvas.width, cxt.canvas.height);
+
+			cxt.save();
+			cxt.shadowColor = 'rgba(0, 0, 0, .8)';
+			cxt.shadowOffsetX = 12;
+			cxt.shadowOffsetY = 12;
+			cxt.shadowBlur = 15;
+
+			drawArc();
+			cxt.restore();
+		}
+
+		cxt.fillStyle = 'rgba(100, 140, 230, .5)';
+		cxt.strokeStyle = cxt.fillStyle;
+		draw();
+
+	</script>
+</body>
+</html>

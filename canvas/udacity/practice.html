@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		canvas{
+			border: 1px dotted #ccc;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="500" height="300">
+		Canvas can not be supported
+	</canvas>
+
+	<script type="text/javascript">
+		var c = document.getElementById('canvas'),
+				cxt = c.getContext('2d');
+
+				
+				cxt.font = "36pt Impact";
+				cxt.textAlign = 'center';
+				// cxt.strokeRect(50, 50, 100, 100);
+				// cxt.beginPath();
+				// cxt.moveTo(75, 75);
+				// cxt.lineTo(125, 125);
+				// cxt.lineTo(125,75);
+				
+				cxt.fillStyle = "white";
+				cxt.fillText('CANVAS MEMES!', c.width/2, 100);
+				// cxt.fill();
+				cxt.strokeStyle = "black";
+				cxt.lineWidth = 3;
+				cxt.strokeText('CANVAS MEMES!', c.width/2, 100);
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Rect</title>
+	<style type="text/css">
+		
+		canvas{border:1px inset #ccc;}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="600" height="600">
+		Canvas not supported
+	</canvas>
+
+<script type="text/javascript">
+
+
+var canvas = document.getElementById('canvas'),
+		cxt = canvas.getContext('2d'),
+		flag = 1;
+function drawRect(){
+
+	cxt.lineJoin = 'round';
+	cxt.lineWidth = 25;
+
+	cxt.strokeStyle = 'goldenrod';
+	cxt.fillStyle = 'rgba(0, 0, 255, .5)';
+
+	cxt.strokeRect(75, 100, 200, 200);
+	cxt.fillRect(325, 100, 200, 200);
+	flag = 0;
+	
+}
+	drawRect();
+	cxt.canvas.onmousedown = function(e){
+		if(flag){
+			drawRect();
+		}else{
+			cxt.clearRect(0, 0, canvas.width, canvas.height);
+			flag = 1;
+		}
+		
+	};
+</script>
+</body>
+</html>

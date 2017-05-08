@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas id="canvas" style="margin:50px auto;border:1px solid #ccc;display:block;"></canvas>
+	<script type="text/javascript">
+		window.onload = function(){
+			var canvas = document.getElementById('canvas');
+			var context = canvas.getContext('2d');
+
+			canvas.width = 1200;
+			canvas.height = 800;
+
+			//渐变
+			var skyStyle = context.createRadialGradient(canvas.width/2, canvas.height, 30, canvas.width/2, canvas.height, canvas.height);
+			skyStyle.addColorStop(0, '#035');
+			skyStyle.addColorStop(1, 'black');
+			context.fillStyle = skyStyle;
+			context.fillRect(0, 0, canvas.width, canvas.height);
+			
+			
+			for(var i = 0;i < 200; i++){
+				var r = Math.random();
+				var x = Math.random() * canvas.width;
+				var y = Math.random() * canvas.height * 0.7;
+				var a = Math.random() * 360;
+				drawStar(context, x, y, r, a);
+			}
+
+			function drawStar(cxt, x, y, r, rot){
+
+				cxt.save();
+				cxt.translate(x, y);
+				cxt.rotate(rot/180 * Math.PI);
+				cxt.scale(r, r);
+				startPath(cxt);
+
+				cxt.fillStyle = '#fb3';
+				cxt.strokeStyle = "#fd5";
+				cxt.lineJoin = "round";
+				
+
+				cxt.fill();
+				cxt.stroke();
+				cxt.restore();
+
+			}
+
+			function startPath(cxt){
+				cxt.beginPath();
+				for(var i = 0;i < 5 ; i++){
+					cxt.lineTo(Math.cos( (18 + i * 72)/180 * Math.PI ) * 20, -Math.sin( (18 + i * 72)/180 * Math.PI ) *20); 
+
+					cxt.lineTo(Math.cos( (54 + i * 72)/180 * Math.PI ) * 10, -Math.sin( (54 + i * 72)/180 * Math.PI ) * 10); 
+				}
+				cxt.closePath();
+
+			}
+
+			context.save();
+			context.beginPath();
+			context.translate(900, 60);
+			context.rotate(Math.PI / 5);
+			context.scale(0.3, 0.3);
+			context.arc(400, 400, 300, 0.5*Math.PI, 1.5*Math.PI, true);
+			context.moveTo(400, 100);
+			context.arcTo(1200, 400, 400, 700, 320.4);
+
+			context.fillStyle = "#fb3"
+			context.fill();
+
+			context.stroke();
+			context.closePath();
+			context.restore();
+
+
+		}
+	</script>
+</body>
+</html>

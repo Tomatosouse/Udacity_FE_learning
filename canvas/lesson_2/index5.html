@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas id="canvas" style="margin: 50px auto;display:block;border: 1px solid #ccc;"></canvas>
+
+	<script>
+		var c = document.getElementById('canvas');
+		c.width = 800;
+		c.height = 800;
+
+		var cxt = c.getContext('2d');
+		drawRoundRect(cxt, 150, 150, 500, 500, 10, '#bbada0');
+		for(var i = 0; i < 4; i++){
+			for(var j = 0; j < 4; j++){
+				drawRoundRect(cxt, 170 + i * 120, 170 + j * 120, 100, 100, 6, '#ccc0b3');
+			}
+		}
+
+		function drawRoundRect(cxt, x, y, width, height, r, color){
+			cxt.save();
+			cxt.beginPath();
+			
+			cxt.translate(x, y);
+			cxt.arc(width-r, height-r, r, 0, 0.5*Math.PI, false);
+			cxt.arc(r, height-r, r, 0.5*Math.PI, 1.0*Math.PI, false);
+			cxt.arc(r, r, r, 1.0*Math.PI, 1.5*Math.PI, false);
+			cxt.arc(width-r, r, r, 1.5*Math.PI, 2.0*Math.PI, false);
+
+			cxt.closePath();
+			cxt.strokeStyle = color || 'black';
+			cxt.fillStyle = color || 'white';
+
+			cxt.fill();
+			cxt.stroke();
+			cxt.restore();
+		}
+
+		
+
+	</script>
+</body>
+</html>

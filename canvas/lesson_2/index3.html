@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas id="canvas" style="margin: 50px auto;display:block;border: 1px solid #ccc;"></canvas>
+	<script>
+		var canvas = document.getElementById("canvas");
+		var cxt = canvas.getContext('2d');
+
+		canvas.width = 800;
+		canvas.height = 800;
+
+		
+		
+		cxt.fillRect(100, 100, 300, 300);
+		cxt.transform(0.5, 0.1, -0.1, 1, 0, 0);
+
+		cxt.save();
+		cxt.fillStyle = 'rgba(0, 0, 256, 0.5)';
+		cxt.fillRect(100, 100, 300, 300);
+
+		
+		cxt.restore();
+	</script>
+</body>
+</html>

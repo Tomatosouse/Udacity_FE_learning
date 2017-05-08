@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>beginPath</title>
+	<style type="text/css">
+		#canvas{border: thin inset #aaa;}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="1000" height="1000">
+		Canvas not supported
+	</canvas>
+
+	<script type="text/javascript">
+		var canvas = document.getElementById('canvas');
+		var cxt = canvas.getContext("2d");
+
+		cxt.beginPath();
+
+		cxt.rect(10, 10, 100, 100);
+		cxt.stroke();
+
+		cxt.beginPath();
+		cxt.rect(50, 50, 100, 100);
+
+		cxt.stroke();
+
+	</script>
+</body>
+</html>
