@@ -1,8 +1,9 @@
 // 这是我们的玩家要躲避的敌人 
-var Enemy = function(loc) {
+var Enemy = function(x, y) {
     // 要应用到每个敌人的实例的变量写在这里
     // 我们已经提供了一个来帮助你实现更多
-    this.loc = loc;
+    this.x = x;
+    this.y = y;
     // 敌人的图片或者雪碧图，用一个我们提供的工具函数来轻松的加载文件
     this.sprite = 'images/enemy-bug.png';
 };
@@ -12,6 +13,8 @@ var Enemy = function(loc) {
 Enemy.prototype.update = function(dt) {
     // 你应该给每一次的移动都乘以 dt 参数，以此来保证游戏在所有的电脑上
     // 都是以同样的速度运行的
+    
+    this.render();
 };
 
 // 此为游戏必须的函数，用来在屏幕上画出敌人，
@@ -21,40 +24,56 @@ Enemy.prototype.render = function() {
 
 // 现在实现你自己的玩家类
 // 这个类需要一个 update() 函数， render() 函数和一个 handleInput()函数
-var player = function(loc) {
-    this.loc = loc;
+var item = function(x, y) {
+    Enemy.call(this, x, y);
     //玩家图片
     this.sprite = 'images/char-boy.png';
 };
 
-player.prototype.update = function() {};
-
-player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-player.prototype.handleInput = function(key) {
+item.prototype = Object.create(Enemy.prototype);
+item.prototype.constructor = item;
+item.prototype.initial = function(){
+    this.x = 202;
+    this.y = 380;
+}
+item.prototype.handleInput = function(key) {
     switch(key) {
         case 'left':
-            this.x -= 1;
+            this.x -= 101;
             break;
         case 'up':
-            this.y -= 1;
+            this.y -= 83;
             break;
         case 'right':
-            this.x += 1;
+            this.x += 101;
             break;
         case 'down':
-            this.y += 1;
+            this.y += 83;
             break;
         default:
             break;
     }
+    if(this.y < 0){
+        return this.initial();
+    }
+    if(this.y > 380){
+        this.y = 380;
+    }
+    if(this.x < 0){
+        this.x = 0;
+    }
+    if(this.x > 404){
+        this.x = 404;
+    }
+    
 };
 
 // 现在实例化你的所有对象
 // 把所有敌人的对象都放进一个叫 allEnemies 的数组里面
 // 把玩家对象放进一个叫 player 的变量里面
+var allEnemies = [];
+var player = new item();
+player.initial();
 
 
 // 这段代码监听游戏玩家的键盘点击事件并且代表将按键的关键数字送到 Play.handleInput()
@@ -66,6 +85,6 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-    //console.log(allowedKeys[e.keyCode]);
+    //console.log(player.x);
     player.handleInput(allowedKeys[e.keyCode]);
 });
