@@ -32,11 +32,13 @@ var item = function(x, y) {
 
 item.prototype = Object.create(Enemy.prototype);
 item.prototype.constructor = item;
+//初始化玩家位置
 item.prototype.initial = function(){
     this.x = 202;
     this.y = 380;
 }
 item.prototype.handleInput = function(key) {
+    //键盘控制的玩家位移操作
     switch(key) {
         case 'left':
             this.x -= 101;
@@ -53,6 +55,8 @@ item.prototype.handleInput = function(key) {
         default:
             break;
     }
+
+    //边缘检测
     if(this.y < 0){
         return this.initial();
     }
