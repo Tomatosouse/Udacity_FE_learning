@@ -1,2 +1,2 @@
 # Udacity_FE_learning
-some practicing code or notes during the learning path
+some practicing during the learning path
