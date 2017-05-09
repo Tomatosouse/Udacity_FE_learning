@@ -1,8 +1,8 @@
 // 这是我们的玩家要躲避的敌人 
-var Enemy = function() {
+var Enemy = function(loc) {
     // 要应用到每个敌人的实例的变量写在这里
     // 我们已经提供了一个来帮助你实现更多
-
+    this.loc = loc;
     // 敌人的图片或者雪碧图，用一个我们提供的工具函数来轻松的加载文件
     this.sprite = 'images/enemy-bug.png';
 };
@@ -21,7 +21,36 @@ Enemy.prototype.render = function() {
 
 // 现在实现你自己的玩家类
 // 这个类需要一个 update() 函数， render() 函数和一个 handleInput()函数
+var player = function(loc) {
+    this.loc = loc;
+    //玩家图片
+    this.sprite = 'images/char-boy.png';
+};
 
+player.prototype.update = function() {};
+
+player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+player.prototype.handleInput = function(key) {
+    switch(key) {
+        case 'left':
+            this.x -= 1;
+            break;
+        case 'up':
+            this.y -= 1;
+            break;
+        case 'right':
+            this.x += 1;
+            break;
+        case 'down':
+            this.y += 1;
+            break;
+        default:
+            break;
+    }
+};
 
 // 现在实例化你的所有对象
 // 把所有敌人的对象都放进一个叫 allEnemies 的数组里面
@@ -37,6 +66,6 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
+    //console.log(allowedKeys[e.keyCode]);
     player.handleInput(allowedKeys[e.keyCode]);
 });
