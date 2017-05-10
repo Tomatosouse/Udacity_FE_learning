@@ -3,9 +3,10 @@ var Enemy = function() {
     // 要应用到每个敌人的实例的变量写在这里
     // 我们已经提供了一个来帮助你实现更多
     
-    this.initial = function(x, y) {
+    this.initial = function(x, y,v) {
         this.x = x;
         this.y = y;
+        this.v = v;
     }
     // 敌人的图片或者雪碧图，用一个我们提供的工具函数来轻松的加载文件
     this.sprite = 'images/enemy-bug.png';
@@ -16,12 +17,13 @@ var Enemy = function() {
 Enemy.prototype.update = function(dt) {
     // 你应该给每一次的移动都乘以 dt 参数，以此来保证游戏在所有的电脑上
     // 都是以同样的速度运行的
-    var move = Math.floor(BUG_SPEED * Math.floor(Math.random() * 10 + 1) * dt);
+    
     if(this.x > LEFT * 5){
-        this.initial(-LEFT, BUG_TOP + Math.floor(Math.random() * 3) * BUG_TOP_MOVE);
+        this.initial(-LEFT, BUG_TOP + Math.floor(Math.random() * 3) * BUG_TOP_MOVE, Math.floor(Math.random() * 100 + 200));
     }else{
-        this.x += move;
+        this.x = this.x + this.v * dt;
     }
+
     this.render();
 };
 
@@ -45,8 +47,12 @@ item.prototype.constructor = item;
 // };
 item.prototype.update = function(){
     this.render();
+    //碰撞检测
+    this.crush(allEnemies);
 }
 item.prototype.handleInput = function(key) {
+    //碰撞检测
+    this.crush(allEnemies);
     //键盘控制的玩家位移操作
     switch(key) {
         case 'left':
@@ -80,16 +86,20 @@ item.prototype.handleInput = function(key) {
     }
     this.render();
     
-    //碰撞检测
-    allEnemies.forEach(function(e){
-        if( player.x - e.x < 101 || player.x - e.x > -101 && player.y - e.y < 67){
-             //player.initial(202, 380);
-        }
-        //console.log(player.x - e.x, player.y - e.y);
-    });
-    
-    
+};
 
+//碰撞检测
+item.prototype.crush = function(enemy){
+    //将和玩家在同一行的虫子对象提出来放入新的数组中
+    var atTheSameRow = enemy.filter(function(e){
+        return (player.y - PLAY_TOP) / PLAY_TOP_MOVE === (e.y - BUG_TOP) / BUG_TOP_MOVE;
+    });
+    //玩家与虫子碰撞时的处理
+    atTheSameRow.forEach(function(e){
+        if( player.x - e.x < LEFT - 50 && player.x - e.x > -LEFT + 20){
+             player.initial(LEFT * 2, PLAY_TOP + PLAY_TOP_MOVE * 4);
+        }
+    });
 };
 
 // 现在实例化你的所有对象
@@ -103,8 +113,9 @@ var PLAY_TOP = 48,
     BUG_TOP = 60,
     BUG_TOP_MOVE = 85,
     BUG_SPEED = 60,
-    MAX_BUG = 3;
+    MAX_BUG = 4;
 
+//建立玩家和虫子对象
 var allEnemies = new Array(MAX_BUG);
 var player = new item();
 //初始化玩家位置
@@ -112,7 +123,8 @@ player.initial(LEFT * 2, PLAY_TOP + PLAY_TOP_MOVE * 4);
 
 for(var i = 0; i < MAX_BUG; i++){
     allEnemies[i] = new Enemy();
-    allEnemies[i].initial(-LEFT, BUG_TOP + i * BUG_TOP_MOVE);
+    //初始化虫子对象
+    allEnemies[i].initial(-LEFT, BUG_TOP + Math.floor(Math.random() * 3) * BUG_TOP_MOVE, Math.floor(Math.random() * 150 + 80));
 }
 
 // allEnemies.forEach(function(e){
