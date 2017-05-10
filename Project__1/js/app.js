@@ -1,9 +1,12 @@
 // 这是我们的玩家要躲避的敌人 
-var Enemy = function(x, y) {
+var Enemy = function() {
     // 要应用到每个敌人的实例的变量写在这里
     // 我们已经提供了一个来帮助你实现更多
-    this.x = x;
-    this.y = y;
+    
+    this.initial = function(x, y) {
+        this.x = x;
+        this.y = y;
+    }
     // 敌人的图片或者雪碧图，用一个我们提供的工具函数来轻松的加载文件
     this.sprite = 'images/enemy-bug.png';
 };
@@ -32,11 +35,7 @@ var item = function(x, y) {
 
 item.prototype = Object.create(Enemy.prototype);
 item.prototype.constructor = item;
-//初始化玩家位置
-item.prototype.initial = function(){
-    this.x = 202;
-    this.y = 380;
-}
+
 item.prototype.handleInput = function(key) {
     //键盘控制的玩家位移操作
     switch(key) {
@@ -58,7 +57,7 @@ item.prototype.handleInput = function(key) {
 
     //边缘检测
     if(this.y < 0){
-        return this.initial();
+        return this.initial(202, 380);
     }
     if(this.y > 380){
         this.y = 380;
@@ -77,8 +76,9 @@ item.prototype.handleInput = function(key) {
 // 把玩家对象放进一个叫 player 的变量里面
 var allEnemies = [];
 var player = new item();
-player.initial();
-
+//初始化玩家位置
+player.initial(202, 380);
+allEnemies[0] = new Enemy();
 
 // 这段代码监听游戏玩家的键盘点击事件并且代表将按键的关键数字送到 Play.handleInput()
 // 方法里面。你不需要再更改这段代码了。
