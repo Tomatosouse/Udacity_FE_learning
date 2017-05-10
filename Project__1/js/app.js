@@ -40,16 +40,16 @@ item.prototype.handleInput = function(key) {
     //键盘控制的玩家位移操作
     switch(key) {
         case 'left':
-            this.x -= 101;
+            this.x -= LEFT;
             break;
         case 'up':
-            this.y -= 83;
+            this.y -= PLAY_TOP_MOVE;
             break;
         case 'right':
-            this.x += 101;
+            this.x += LEFT;
             break;
         case 'down':
-            this.y += 83;
+            this.y += PLAY_TOP_MOVE;
             break;
         default:
             break;
@@ -57,28 +57,59 @@ item.prototype.handleInput = function(key) {
 
     //边缘检测
     if(this.y < 0){
-        return this.initial(202, 380);
+        return this.initial(LEFT * 2, PLAY_TOP + PLAY_TOP_MOVE * 4);
     }
-    if(this.y > 380){
-        this.y = 380;
+    if(this.y > PLAY_TOP + PLAY_TOP_MOVE * 4){
+        this.y = PLAY_TOP + PLAY_TOP_MOVE * 4;
     }
     if(this.x < 0){
         this.x = 0;
     }
-    if(this.x > 404){
-        this.x = 404;
+    if(this.x > LEFT * 4){
+        this.x = LEFT * 4;
     }
-    
+    console.log(player.x, player.y);
+    //碰撞检测
+    allEnemies.forEach(function(e){
+        if( player.x - e.x < 101 || player.x - e.x > -101 && player.y - e.y < 67){
+             //player.initial(202, 380);
+        }
+        //console.log(player.x - e.x, player.y - e.y);
+    });
+   
+
 };
 
 // 现在实例化你的所有对象
 // 把所有敌人的对象都放进一个叫 allEnemies 的数组里面
 // 把玩家对象放进一个叫 player 的变量里面
-var allEnemies = [];
+
+//定义相关常量 
+var PLAY_TOP = 48,
+    PLAY_TOP_MOVE = 83,
+    LEFT = 101,
+    BUG_TOP = 60,
+    BUG_TOP_MOVE = 85,
+    MAX_BUG = 3;
+
+var allEnemies = new Array(MAX_BUG);
 var player = new item();
 //初始化玩家位置
-player.initial(202, 380);
+player.initial(LEFT * 2, PLAY_TOP + PLAY_TOP_MOVE * 4);
+
 allEnemies[0] = new Enemy();
+allEnemies[1] = new Enemy();
+allEnemies[2] = new Enemy();
+allEnemies[0].initial(0, 60);
+allEnemies[1].initial(101, 145);
+allEnemies[2].initial(202, 230);
+
+// allEnemies.forEach(function(e){
+//     // if(player.x - e.x < 101 && player.y === e.y){
+//     //     player.initial(202, 380);
+//     // }
+//     console.log(player.x - e.x);
+// });
 
 // 这段代码监听游戏玩家的键盘点击事件并且代表将按键的关键数字送到 Play.handleInput()
 // 方法里面。你不需要再更改这段代码了。
