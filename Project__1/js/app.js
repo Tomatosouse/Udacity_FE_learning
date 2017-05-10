@@ -17,6 +17,11 @@ Enemy.prototype.update = function(dt) {
     // 你应该给每一次的移动都乘以 dt 参数，以此来保证游戏在所有的电脑上
     // 都是以同样的速度运行的
     
+    if(this.x > LEFT * 5){
+        this.x = -LEFT;
+    }else{
+        this.x = this.x + BUG_SPEED * BUG_SPEED_RATE  * dt;
+    }
     this.render();
 };
 
@@ -35,7 +40,12 @@ var item = function(x, y) {
 
 item.prototype = Object.create(Enemy.prototype);
 item.prototype.constructor = item;
-
+// item.prototype.render = function() {
+//     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+// };
+item.prototype.update = function(){
+    this.render();
+}
 item.prototype.handleInput = function(key) {
     //键盘控制的玩家位移操作
     switch(key) {
@@ -54,7 +64,7 @@ item.prototype.handleInput = function(key) {
         default:
             break;
     }
-
+    
     //边缘检测
     if(this.y < 0){
         return this.initial(LEFT * 2, PLAY_TOP + PLAY_TOP_MOVE * 4);
@@ -68,7 +78,7 @@ item.prototype.handleInput = function(key) {
     if(this.x > LEFT * 4){
         this.x = LEFT * 4;
     }
-    console.log(player.x, player.y);
+    this.render();
     //碰撞检测
     allEnemies.forEach(function(e){
         if( player.x - e.x < 101 || player.x - e.x > -101 && player.y - e.y < 67){
@@ -76,7 +86,8 @@ item.prototype.handleInput = function(key) {
         }
         //console.log(player.x - e.x, player.y - e.y);
     });
-   
+    
+    
 
 };
 
@@ -90,7 +101,10 @@ var PLAY_TOP = 48,
     LEFT = 101,
     BUG_TOP = 60,
     BUG_TOP_MOVE = 85,
-    MAX_BUG = 3;
+    BUG_SPEED = 60,
+    BUG_SPEED_RATE = Math.floor(Math.random() * 8 + 1),
+    MAX_BUG = 3,
+    RANDOM = Math.floor(Math.random() * 3);
 
 var allEnemies = new Array(MAX_BUG);
 var player = new item();
