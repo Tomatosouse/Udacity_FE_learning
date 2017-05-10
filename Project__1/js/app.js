@@ -16,11 +16,11 @@ var Enemy = function() {
 Enemy.prototype.update = function(dt) {
     // 你应该给每一次的移动都乘以 dt 参数，以此来保证游戏在所有的电脑上
     // 都是以同样的速度运行的
-    
+    var move = Math.floor(BUG_SPEED * Math.floor(Math.random() * 10 + 1) * dt);
     if(this.x > LEFT * 5){
-        this.x = -LEFT;
+        this.initial(-LEFT, BUG_TOP + Math.floor(Math.random() * 3) * BUG_TOP_MOVE);
     }else{
-        this.x = this.x + BUG_SPEED * BUG_SPEED_RATE  * dt;
+        this.x += move;
     }
     this.render();
 };
@@ -79,6 +79,7 @@ item.prototype.handleInput = function(key) {
         this.x = LEFT * 4;
     }
     this.render();
+    
     //碰撞检测
     allEnemies.forEach(function(e){
         if( player.x - e.x < 101 || player.x - e.x > -101 && player.y - e.y < 67){
@@ -102,21 +103,17 @@ var PLAY_TOP = 48,
     BUG_TOP = 60,
     BUG_TOP_MOVE = 85,
     BUG_SPEED = 60,
-    BUG_SPEED_RATE = Math.floor(Math.random() * 8 + 1),
-    MAX_BUG = 3,
-    RANDOM = Math.floor(Math.random() * 3);
+    MAX_BUG = 3;
 
 var allEnemies = new Array(MAX_BUG);
 var player = new item();
 //初始化玩家位置
 player.initial(LEFT * 2, PLAY_TOP + PLAY_TOP_MOVE * 4);
 
-allEnemies[0] = new Enemy();
-allEnemies[1] = new Enemy();
-allEnemies[2] = new Enemy();
-allEnemies[0].initial(0, 60);
-allEnemies[1].initial(101, 145);
-allEnemies[2].initial(202, 230);
+for(var i = 0; i < MAX_BUG; i++){
+    allEnemies[i] = new Enemy();
+    allEnemies[i].initial(-LEFT, BUG_TOP + i * BUG_TOP_MOVE);
+}
 
 // allEnemies.forEach(function(e){
 //     // if(player.x - e.x < 101 && player.y === e.y){
