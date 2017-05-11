@@ -1,16 +1,38 @@
-// 这是我们的玩家要躲避的敌人 
-var Enemy = function() {
-    // 要应用到每个敌人的实例的变量写在这里
-    // 我们已经提供了一个来帮助你实现更多
-    
+//搭建可以继承的父类
+var Item = function(){
+    //初始化
     this.initial = function(x, y,v) {
         this.x = x;
         this.y = y;
         this.v = v;
-    }
+    };
+
+    //图片初始化
+    this.sprite = "";
+}
+
+Item.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// 这是我们的玩家要躲避的敌人 
+var Enemy = function(x, y, v) {
+    // 要应用到每个敌人的实例的变量写在这里
+    // 我们已经提供了一个来帮助你实现更多
+    
+    // this.initial = function(x, y,v) {
+    //     this.x = x;
+    //     this.y = y;
+    //     this.v = v;
+    // }
+    Item.call(this, x, y, v);
     // 敌人的图片或者雪碧图，用一个我们提供的工具函数来轻松的加载文件
     this.sprite = 'images/enemy-bug.png';
 };
+
+//从父类继承
+Enemy.prototype = Object.create(Item.prototype);
+Enemy.prototype.constructor = Enemy;
 
 // 此为游戏必须的函数，用来更新敌人的位置
 // 参数: dt ，表示时间间隙
@@ -28,29 +50,32 @@ Enemy.prototype.update = function(dt) {
 };
 
 // 此为游戏必须的函数，用来在屏幕上画出敌人，
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+  //已经继承自父类不用重复new
+// Enemy.prototype.render = function() {
+//     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+// };
 
 // 现在实现你自己的玩家类
 // 这个类需要一个 update() 函数， render() 函数和一个 handleInput()函数
-var item = function(x, y) {
+var Player = function(x, y) {
     Enemy.call(this, x, y);
     //玩家图片
     this.sprite = 'images/char-boy.png';
 };
 
-item.prototype = Object.create(Enemy.prototype);
-item.prototype.constructor = item;
-// item.prototype.render = function() {
+Player.prototype = Object.create(Item.prototype);
+Player.prototype.constructor = Player;
+
+//已经继承自父类可以略去new
+// Player.prototype.render = function() {
 //     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 // };
-item.prototype.update = function(){
+Player.prototype.update = function(){
     this.render();
     //碰撞检测
     this.crush(allEnemies);
 }
-item.prototype.handleInput = function(key) {
+Player.prototype.handleInput = function(key) {
     //碰撞检测
     this.crush(allEnemies);
     //键盘控制的玩家位移操作
@@ -88,16 +113,18 @@ item.prototype.handleInput = function(key) {
     
 };
 
-//碰撞检测
-item.prototype.crush = function(enemy){
+//碰撞检测函数
+Player.prototype.crush = function(enemy){
+    //保存this对象
+    var that = this;
     //将和玩家在同一行的虫子对象提出来放入新的数组中
     var atTheSameRow = enemy.filter(function(e){
-        return (player.y - PLAY_TOP) / PLAY_TOP_MOVE === (e.y - BUG_TOP) / BUG_TOP_MOVE;
+        return (that.y - PLAY_TOP) / PLAY_TOP_MOVE === (e.y - BUG_TOP) / BUG_TOP_MOVE;
     });
     //玩家与虫子碰撞时的处理
     atTheSameRow.forEach(function(e){
-        if( player.x - e.x < LEFT - 50 && player.x - e.x > -LEFT + 20){
-             player.initial(LEFT * 2, PLAY_TOP + PLAY_TOP_MOVE * 4);
+        if( that.x - e.x < LEFT - 50 && that.x - e.x > -LEFT + 20){
+             that.initial(LEFT * 2, PLAY_TOP + PLAY_TOP_MOVE * 4);
         }
     });
 };
@@ -117,7 +144,7 @@ var PLAY_TOP = 48,
 
 //建立玩家和虫子对象
 var allEnemies = new Array(MAX_BUG);
-var player = new item();
+var player = new Player();
 //初始化玩家位置
 player.initial(LEFT * 2, PLAY_TOP + PLAY_TOP_MOVE * 4);
 
