@@ -139,7 +139,7 @@ var PLAY_TOP = 48,
     LEFT = 101,
     BUG_TOP = 60,
     BUG_TOP_MOVE = 85,
-    BUG_SPEED = 60,
+    //可设置的虫子的总数
     MAX_BUG = 4;
 
 //建立玩家和虫子对象
