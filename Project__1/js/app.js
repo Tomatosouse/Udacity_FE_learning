@@ -46,7 +46,7 @@ Enemy.prototype.update = function(dt) {
         this.x = this.x + this.v * dt;
     }
 
-    this.render();
+    //this.render();
 };
 
 // 此为游戏必须的函数，用来在屏幕上画出敌人，
@@ -71,7 +71,7 @@ Player.prototype.constructor = Player;
 //     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 // };
 Player.prototype.update = function(){
-    this.render();
+    //this.render();
     //碰撞检测
     this.crush(allEnemies);
 }
@@ -109,7 +109,7 @@ Player.prototype.handleInput = function(key) {
     if(this.x > LEFT * 4){
         this.x = LEFT * 4;
     }
-    this.render();
+    //this.render();
     
 };
 
