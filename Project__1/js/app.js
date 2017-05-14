@@ -66,10 +66,19 @@ var Player = function(x, y) {
 Player.prototype = Object.create(Item.prototype);
 Player.prototype.constructor = Player;
 
-//已经继承自父类可以略去new
-// Player.prototype.render = function() {
-//     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-// };
+//修改render 让其出现胜利标识
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    if(this.y < 0){
+        ctx.fillStyle = 'gold';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 2;
+        ctx.font = "4rem Impact";
+        ctx.textAlign = 'center';
+        ctx.fillText("You win", 252, 200);
+        ctx.strokeText("You win", 252, 200);
+    }
+};
 Player.prototype.update = function(){
     //this.render();
     //碰撞检测
@@ -98,7 +107,7 @@ Player.prototype.handleInput = function(key) {
     
     //边缘检测
     if(this.y < 0){
-        return this.initial(LEFT * 2, PLAY_TOP + PLAY_TOP_MOVE * 4);
+        this.y = -35;
     }
     if(this.y > PLAY_TOP + PLAY_TOP_MOVE * 4){
         this.y = PLAY_TOP + PLAY_TOP_MOVE * 4;
