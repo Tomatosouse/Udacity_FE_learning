@@ -97,23 +97,29 @@ Player.prototype.update = function(){
 }
 Player.prototype.handleInput = function(key) {
 
-    var nowX = this.x,
-        nowY = this.y;
+    var nowX = this.x;
     //碰撞检测
     this.crush(allEnemies);
     //键盘控制的玩家位移操作
+    
     switch(key) {
         case 'left':
             this.x -= LEFT;
             break;
         case 'up':
-            this.y -= PLAY_TOP_MOVE;
+            //玩家到达水域部分锁定上下移动
+            if(this.y !== -35){
+                this.y -= PLAY_TOP_MOVE;
+            }
             break;
         case 'right':
             this.x += LEFT;
             break;
         case 'down':
-            this.y += PLAY_TOP_MOVE;
+            //玩家到达水域部分锁定上下移动
+            if(this.y !== -35){
+                this.y += PLAY_TOP_MOVE;
+            }
             break;
         default:
             break;
@@ -122,15 +128,12 @@ Player.prototype.handleInput = function(key) {
     
     //边缘检测
 
-    //当玩家到达水域时锁定位置
-    if(this.y < 0 || this.y - nowY === PLAY_TOP_MOVE){
-        this.y = -35;
-    }
     //当玩家到达水域后 按下左右方向键时重新开始游戏
     if(this.y === -35 && this.x - nowX !== 0){
         this.x = nowX;
         //刷新当前页面重新开始
-        window.location.reload(true);   
+        //this.initial(LEFT * 2, PLAY_TOP + PLAY_TOP_MOVE * 4);
+        window.location.reload(true);  
     }
     if(this.y > PLAY_TOP + PLAY_TOP_MOVE * 4){
         this.y = PLAY_TOP + PLAY_TOP_MOVE * 4;
