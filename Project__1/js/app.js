@@ -46,7 +46,7 @@ Enemy.prototype.update = function(dt) {
         this.x = this.x + this.v * dt;
     }
 
-    this.render();
+    //this.render();
 };
 
 // 此为游戏必须的函数，用来在屏幕上画出敌人，
@@ -66,16 +66,39 @@ var Player = function(x, y) {
 Player.prototype = Object.create(Item.prototype);
 Player.prototype.constructor = Player;
 
-//已经继承自父类可以略去new
-// Player.prototype.render = function() {
-//     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-// };
+//修改render 让其出现胜利标识
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    //显示胜利标识
+    if(this.y < 0){
+        ctx.save();
+        ctx.fillStyle = 'gold';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 2;
+        ctx.font = "4.5rem Impact";
+        ctx.textAlign = 'center';
+        ctx.fillText("You Win", 252, 250);
+        ctx.strokeText("You Win", 252, 250);
+        ctx.restore();
+        
+        ctx.save();
+        ctx.fillStyle = 'gold';
+        ctx.font = "2rem Impact";
+        ctx.textAlign = 'center';
+
+        ctx.fillText("Press the Left or Right arrow to restart", 252, 450);
+        ctx.strokeText("Press the Left or Right arrow to restart", 252, 450);
+    }
+};
 Player.prototype.update = function(){
-    this.render();
+    //this.render();
     //碰撞检测
     this.crush(allEnemies);
 }
 Player.prototype.handleInput = function(key) {
+
+    var nowX = this.x,
+        nowY = this.y;
     //碰撞检测
     this.crush(allEnemies);
     //键盘控制的玩家位移操作
@@ -96,9 +119,18 @@ Player.prototype.handleInput = function(key) {
             break;
     }
     
+    
     //边缘检测
-    if(this.y < 0){
-        return this.initial(LEFT * 2, PLAY_TOP + PLAY_TOP_MOVE * 4);
+
+    //当玩家到达水域时锁定位置
+    if(this.y < 0 || this.y - nowY === PLAY_TOP_MOVE){
+        this.y = -35;
+    }
+    //当玩家到达水域后 按下左右方向键时重新开始游戏
+    if(this.y === -35 && this.x - nowX !== 0){
+        this.x = nowX;
+        //刷新当前页面重新开始
+        window.location.reload(true);   
     }
     if(this.y > PLAY_TOP + PLAY_TOP_MOVE * 4){
         this.y = PLAY_TOP + PLAY_TOP_MOVE * 4;
@@ -109,7 +141,7 @@ Player.prototype.handleInput = function(key) {
     if(this.x > LEFT * 4){
         this.x = LEFT * 4;
     }
-    this.render();
+    //this.render();
     
 };
 
